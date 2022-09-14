@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from "@mui/material";
+import { useEffect, useState } from "react";
+import "./App.css";
+import CardsCharacters from "./components/CardsCharacters";
+import { getCharacters } from "./services/MiApi";
+import "bootstrap/dist/css/bootstrap.min.css";
+import NavbarSearch from "./components/Navbar";
 
 function App() {
+  const [characters, setCharacters] = useState([]);
+
+  useEffect(() => {
+    const getCharactersService = async () => {
+      const response = await getCharacters();
+
+      setCharacters(response);
+    };
+
+    getCharactersService();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavbarSearch setCharacters={setCharacters} />
+      <Container>
+        <CardsCharacters characters={characters} />
+      </Container>
+    </>
   );
 }
 
